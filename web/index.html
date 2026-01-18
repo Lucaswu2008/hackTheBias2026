@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deafine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="brand">SignEd.</div>
+          <nav class="nav">
+            <button class="nav-link is-active" data-target="home">Home</button>
+            <button class="nav-link" data-target="learning">Learning</button>
+            <button class="nav-link" data-target="peers">Peers</button>
+          </nav>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-link">Help</button>
+          <button class="topbar-btn">User</button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page-section is-visible" id="home">
+          <div class="hero">
+            <div>
+              <p class="pill">Realtime ASL detection</p>
+              <h1>Welcome, User</h1>
+              <p class="subhead">
+                Track your progress, review lessons, and practice with peers.
+              </p>
+            </div>
+            <div class="hero-card">
+              <h2>Continue lesson</h2>
+              <p class="muted">Pick up where you left off with Lesson 1.</p>
+              <div class="hero-actions">
+                <button class="primary-btn" id="homeContinue">Continue</button>
+                <button class="ghost-btn" id="homeGoToLesson">Go to lesson</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats stagger">
+            <div class="stat-card">
+              <p class="stat-label">Letters mastered</p>
+              <p class="stat-value">18 / 24</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Weekly streak</p>
+              <p class="stat-value">5 days</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Avg. confidence</p>
+              <p class="stat-value">92%</p>
+            </div>
+          </div>
+
+          <div class="insights">
+            <div class="section-header">
+              <h2>Weekly insights</h2>
+              <button class="ghost-btn">View report</button>
+            </div>
+            <div class="insight-grid stagger">
+              <div class="insight-card">
+                <p class="muted">Accuracy trend</p>
+                <div class="bar-row">
+                  <span>Mon</span>
+                  <div class="bar"><div style="width: 68%"></div></div>
+                  <span>68%</span>
+                </div>
+                <div class="bar-row">
+                  <span>Wed</span>
+                  <div class="bar"><div style="width: 84%"></div></div>
+                  <span>84%</span>
+                </div>
+                <div class="bar-row">
+                  <span>Fri</span>
+                  <div class="bar"><div style="width: 91%"></div></div>
+                  <span>91%</span>
+                </div>
+              </div>
+              <div class="insight-card">
+                <p class="muted">Common misses</p>
+                <ul class="tag-list">
+                  <li>S vs T</li>
+                  <li>M vs N</li>
+                  <li>U vs V</li>
+                </ul>
+                <p class="muted">Focus on finger spacing this week.</p>
+              </div>
+              <div class="insight-card">
+                <p class="muted">Practice rhythm</p>
+                <div class="timeline">
+                  <div>
+                    <p class="timeline-label">Morning</p>
+                    <p>12 min avg</p>
+                  </div>
+                  <div>
+                    <p class="timeline-label">Evening</p>
+                    <p>18 min avg</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="leaderboard">
+            <div class="section-header">
+              <h2>Leaderboard</h2>
+              <button class="ghost-btn">View all</button>
+            </div>
+            <div class="leaderboard-card">
+              <div class="leaderboard-head">
+                <p class="muted">Weekly streaks</p>
+                <span class="pill">Live</span>
+              </div>
+              <div class="leaderboard-list">
+                <div class="leader-row">
+                  <span class="rank">1</span>
+                  <div>
+                    <p class="leader-name">Kai M.</p>
+                    <p class="muted">18 lessons</p>
+                  </div>
+                  <span class="streak">7 days</span>
+                </div>
+                <div class="leader-row is-me">
+                  <span class="rank">2</span>
+                  <div>
+                    <p class="leader-name">You</p>
+                    <p class="muted">16 lessons</p>
+                  </div>
+                  <span class="streak">6 days</span>
+                </div>
+                <div class="leader-row">
+                  <span class="rank">3</span>
+                  <div>
+                    <p class="leader-name">Ava R.</p>
+                    <p class="muted">15 lessons</p>
+                  </div>
+                  <span class="streak">6 days</span>
+                </div>
+                <div class="leader-row">
+                  <span class="rank">4</span>
+                  <div>
+                    <p class="leader-name">Noah T.</p>
+                    <p class="muted">14 lessons</p>
+                  </div>
+                  <span class="streak">5 days</span>
+                </div>
+                <div class="leader-row">
+                  <span class="rank">5</span>
+                  <div>
+                    <p class="leader-name">Mia L.</p>
+                    <p class="muted">13 lessons</p>
+                  </div>
+                  <span class="streak">5 days</span>
+                </div>
+                <div class="leader-row">
+                  <span class="rank">6</span>
+                  <div>
+                    <p class="leader-name">Eli P.</p>
+                    <p class="muted">12 lessons</p>
+                  </div>
+                  <span class="streak">4 days</span>
+                </div>
+                <div class="leader-row">
+                  <span class="rank">7</span>
+                  <div>
+                    <p class="leader-name">Zoe K.</p>
+                    <p class="muted">12 lessons</p>
+                  </div>
+                  <span class="streak">4 days</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section learning-page" id="learning">
+          <div class="section-header">
+            <div>
+              <h2>Learning</h2>
+              <p class="muted">Scroll through lessons and jump into your current one.</p>
+            </div>
+          </div>
+
+          <div class="learning-layout stagger">
+            <div class="lesson-scroller" aria-label="Lesson list">
+              <div class="lesson-list" id="lessonList"></div>
+            </div>
+
+            <div class="lesson-detail-stack">
+              <div class="panel lesson-detail" id="lessonDetail">
+                <h3 id="lessonTitle">Lesson 1: Simple ASL alphabet reveal</h3>
+                <p class="muted" id="lessonSummary">
+                  Learn the static alphabet forms and build muscle memory with short drills.
+                </p>
+                <div class="lesson-info">
+                  <div>
+                    <p class="input-label">Completion</p>
+                    <p class="lesson-value" id="lessonCompletion">0%</p>
+                  </div>
+                  <div>
+                    <p class="input-label">Status</p>
+                    <p class="lesson-value" id="lessonStatus">Current</p>
+                  </div>
+                </div>
+                <div class="panel-actions align-right">
+                  <button class="primary-btn" id="lessonAction">Start lesson</button>
+              </div>
+            </div>
+
+            <div class="panel lesson-deep-preview">
+                <p class="input-label">Lesson deep preview</p>
+                <p class="muted" id="lessonDeepPreview">
+                  Learn the static alphabet forms and build muscle memory with short drills.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="page-section lesson-page" id="lesson">
+          <div class="lesson-stage">
+            <div class="lesson-player-header">
+              <div>
+                <p class="pill">Lesson in progress</p>
+                <h2 id="lessonPlayerTitle">Lesson 1: Simple ASL alphabet reveal</h2>
+              </div>
+              <div class="lesson-player-actions">
+                <button class="primary-btn" id="lessonExit">Exit</button>
+              </div>
+            </div>
+            <div class="lesson-main">
+              <div class="lesson-detector" id="lessonDetectorWrap">
+                <div class="lesson-detector-frame">
+                  <iframe
+                    id="lessonDetectorFrame"
+                    title="ASL detector"
+                    src="about:blank"
+                    loading="lazy"
+                  ></iframe>
+                  <div class="lesson-detector-placeholder" id="lessonDetectorPlaceholder">
+                    Practice pages open the live detector here.
+                  </div>
+                </div>
+              </div>
+              <div class="lesson-carousel">
+                <div class="lesson-page-content">
+                  <p class="input-label" id="lessonPageLabel">Lesson page 1</p>
+                  <h3 id="lessonPageTitle">Alphabet overview</h3>
+                  <p class="muted" id="lessonPageBody">
+                    Get familiar with the full ASL alphabet and the camera framing needed for detection.
+                  </p>
+                </div>
+                <div class="lesson-nav">
+                  <button class="ghost-btn" id="lessonBack">Back</button>
+                  <div class="lesson-dots" id="lessonDots" aria-label="Lesson progress"></div>
+                  <button class="primary-btn" id="lessonNext">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section" id="peers">
+          <div class="section-header">
+            <div>
+              <h2>Peers</h2>
+              <p class="muted">Match and chat with other learners. Features coming soon.</p>
+            </div>
+            <button class="ghost-btn">Create room</button>
+          </div>
+
+          <div class="peer-grid stagger">
+            <div class="panel">
+              <h3>Live conversation</h3>
+              <div class="chat-window">
+                <div class="chat-bubble">
+                  <p class="chat-name">Avery</p>
+                  <p>Want to practice letters today?</p>
+                </div>
+                <div class="chat-bubble is-me">
+                  <p class="chat-name">You</p>
+                  <p>Yes! Let's do 10 minutes.</p>
+                </div>
+                <div class="chat-bubble">
+                  <p class="chat-name">Avery</p>
+                  <p>Cool. I'll start a call.</p>
+                </div>
+              </div>
+              <div class="chat-input">
+                <input class="input-field" placeholder="Message peers (feature coming soon)" />
+                <button class="primary-btn">Send</button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3>Peer list</h3>
+              <div class="list">
+                <div class="list-row">
+                  <div>
+                    <p class="list-title">Avery</p>
+                    <p class="muted">Practicing vowels</p>
+                  </div>
+                  <button class="ghost-btn">Ping</button>
+                </div>
+                <div class="list-row">
+                  <div>
+                    <p class="list-title">Jordan</p>
+                    <p class="muted">Working on pace</p>
+                  </div>
+                  <button class="ghost-btn">Ping</button>
+                </div>
+                <div class="list-row">
+                  <div>
+                    <p class="list-title">Sam</p>
+                    <p class="muted">New to ASL</p>
+                  </div>
+                  <button class="ghost-btn">Ping</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

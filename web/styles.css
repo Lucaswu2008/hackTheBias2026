@@ -676,6 +676,41 @@ h3 {
   border: 1px solid var(--divider);
 }
 
+.lesson-detector-info {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--divider);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: none;
+  gap: 4px;
+  min-width: 180px;
+}
+
+.lesson-detector-info.is-visible {
+  display: grid;
+}
+
+.lesson-detector-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.lesson-detector-detail {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.lesson-detector-accuracy {
+  color: var(--text);
+  font-weight: 600;
+}
+
 .lesson-page .content {
   max-width: 1600px;
   padding-top: 24px;

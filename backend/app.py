@@ -1,5 +1,3 @@
-"""Flask backend for embedded ASL detector."""
-
 from __future__ import annotations
 
 import html

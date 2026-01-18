@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Deafine</title>
+    <title>SignEd.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -52,15 +52,15 @@
           <div class="stats stagger">
             <div class="stat-card">
               <p class="stat-label">Letters mastered</p>
-              <p class="stat-value">18 / 24</p>
+              <p class="stat-value">0 / 18</p>
             </div>
             <div class="stat-card">
               <p class="stat-label">Weekly streak</p>
-              <p class="stat-value">5 days</p>
+              <p class="stat-value">0 days</p>
             </div>
             <div class="stat-card">
               <p class="stat-label">Avg. confidence</p>
-              <p class="stat-value">92%</p>
+              <p class="stat-value">--%</p>
             </div>
           </div>
 
@@ -74,39 +74,37 @@
                 <p class="muted">Accuracy trend</p>
                 <div class="bar-row">
                   <span>Mon</span>
-                  <div class="bar"><div style="width: 68%"></div></div>
-                  <span>68%</span>
+                  <div class="bar"><div style="width: 0%"></div></div>
+                  <span>--%</span>
                 </div>
                 <div class="bar-row">
                   <span>Wed</span>
-                  <div class="bar"><div style="width: 84%"></div></div>
-                  <span>84%</span>
+                  <div class="bar"><div style="width: 0%"></div></div>
+                  <span>--%</span>
                 </div>
                 <div class="bar-row">
                   <span>Fri</span>
-                  <div class="bar"><div style="width: 91%"></div></div>
-                  <span>91%</span>
+                  <div class="bar"><div style="width: 0%"></div></div>
+                  <span>--%</span>
                 </div>
               </div>
               <div class="insight-card">
                 <p class="muted">Common misses</p>
                 <ul class="tag-list">
-                  <li>S vs T</li>
-                  <li>M vs N</li>
-                  <li>U vs V</li>
+                  <li>N/A</li>
                 </ul>
-                <p class="muted">Focus on finger spacing this week.</p>
+                <p class="muted">N/A</p>
               </div>
               <div class="insight-card">
                 <p class="muted">Practice rhythm</p>
                 <div class="timeline">
                   <div>
                     <p class="timeline-label">Morning</p>
-                    <p>12 min avg</p>
+                    <p>--</p>
                   </div>
                   <div>
                     <p class="timeline-label">Evening</p>
-                    <p>18 min avg</p>
+                    <p>--</p>
                   </div>
                 </div>
               </div>
@@ -131,14 +129,6 @@
                     <p class="muted">18 lessons</p>
                   </div>
                   <span class="streak">7 days</span>
-                </div>
-                <div class="leader-row is-me">
-                  <span class="rank">2</span>
-                  <div>
-                    <p class="leader-name">You</p>
-                    <p class="muted">16 lessons</p>
-                  </div>
-                  <span class="streak">6 days</span>
                 </div>
                 <div class="leader-row">
                   <span class="rank">3</span>
@@ -179,6 +169,14 @@
                     <p class="muted">12 lessons</p>
                   </div>
                   <span class="streak">4 days</span>
+                </div>
+                <div class="leader-row is-me">
+                  <span class="rank">8</span>
+                  <div>
+                    <p class="leader-name">You</p>
+                    <p class="muted">0 lessons</p>
+                  </div>
+                  <span class="streak">0 days</span>
                 </div>
               </div>
             </div>
@@ -242,6 +240,14 @@
               </div>
             </div>
             <div class="lesson-main">
+              <div class="lesson-detector-info" id="lessonDetectorInfo">
+                <p class="lesson-detector-label" id="lessonDetectorLabel">Detector</p>
+                <p class="lesson-detector-detail" id="lessonDetectorTarget">Target: --</p>
+                <p class="lesson-detector-detail lesson-detector-accuracy" id="lessonDetectorAccuracy">
+                  Accuracy: --%
+                </p>
+                <p class="lesson-detector-detail" id="lessonDetectorTimer"></p>
+              </div>
               <div class="lesson-detector" id="lessonDetectorWrap">
                 <div class="lesson-detector-frame" id="lessonDetectorFrameWrap">
                   <iframe

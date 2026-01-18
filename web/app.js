@@ -159,6 +159,11 @@ const lessonDetectorFrameWrap = document.getElementById('lessonDetectorFrameWrap
 const lessonDetectorMessage = document.getElementById('lessonDetectorMessage');
 const lessonDetectorMedia = document.getElementById('lessonDetectorMedia');
 const lessonDetectorMediaImg = document.getElementById('lessonDetectorMediaImg');
+const lessonDetectorInfo = document.getElementById('lessonDetectorInfo');
+const lessonDetectorLabel = document.getElementById('lessonDetectorLabel');
+const lessonDetectorTarget = document.getElementById('lessonDetectorTarget');
+const lessonDetectorAccuracy = document.getElementById('lessonDetectorAccuracy');
+const lessonDetectorTimer = document.getElementById('lessonDetectorTimer');
 const homeContinue = document.getElementById('homeContinue');
 const homeGoToLesson = document.getElementById('homeGoToLesson');
 const friendsList = document.getElementById('friendsList');
@@ -188,6 +193,7 @@ let translationTimer = null;
 let lastSeenLabel = null;
 let loggedForLabel = false;
 let translationBuffer = '';
+let lessonStatusTimer = null;
 
 const getCurrentLessonIndex = () => {
   const currentIndex = lessons.findIndex((lesson) => lesson.status === 'current');
@@ -214,6 +220,56 @@ const getPracticeLetter = (page) => {
   } catch {
     return null;
   }
+};
+
+const stopLessonStatus = () => {
+  if (lessonStatusTimer) {
+    window.clearInterval(lessonStatusTimer);
+    lessonStatusTimer = null;
+  }
+  if (lessonDetectorInfo) {
+    lessonDetectorInfo.classList.remove('is-visible');
+  }
+};
+
+const updateLessonStatus = () => {
+  if (!activePracticeLetter) return;
+  fetch(`http://localhost:5000/status?letter=${encodeURIComponent(activePracticeLetter)}`)
+    .then((response) => response.json())
+    .then((data) => {
+      const accuracy = Math.round(data.accuracy || 0);
+      if (lessonDetectorAccuracy) {
+        lessonDetectorAccuracy.textContent = `Accuracy: ${accuracy}%`;
+      }
+      if (unlockedPages.has(activePageIndex)) {
+        if (lessonDetectorTimer) {
+          lessonDetectorTimer.textContent = 'Ready to advance';
+        }
+        return;
+      }
+      const stable = Number(data.stable_seconds || 0);
+      const remaining = Math.max(0, 3 - stable);
+      if (lessonDetectorTimer) {
+        lessonDetectorTimer.textContent =
+          remaining > 0 ? `Hold steady: ${remaining.toFixed(1)}s` : 'Ready to advance';
+      }
+    })
+    .catch(() => {});
+};
+
+const startLessonStatus = () => {
+  if (!activePracticeLetter) return;
+  if (lessonDetectorLabel) {
+    lessonDetectorLabel.textContent = `Detector ${activePracticeLetter.toUpperCase()}`;
+  }
+  if (lessonDetectorTarget) {
+    lessonDetectorTarget.textContent = `Target: ${activePracticeLetter.toUpperCase()}`;
+  }
+  if (lessonDetectorInfo) {
+    lessonDetectorInfo.classList.add('is-visible');
+  }
+  updateLessonStatus();
+  lessonStatusTimer = window.setInterval(updateLessonStatus, 300);
 };
 
 const statusLabel = (status) => {
@@ -259,6 +315,10 @@ const renderLessonPage = () => {
   const page = activePages[activePageIndex];
   if (!page) return;
   activePracticeLetter = getPracticeLetter(page);
+  stopLessonStatus();
+  if (activePracticeLetter) {
+    startLessonStatus();
+  }
   if (lessonPageLabel) {
     lessonPageLabel.textContent =
       page.label || `Lesson page ${activePageIndex + 1} of ${activePages.length}`;
@@ -461,6 +521,10 @@ const showSection = (targetId) => {
     selectLesson(getCurrentLessonIndex(), { scrollIntoView: true });
   }
 
+  if (targetId !== 'lesson') {
+    stopLessonStatus();
+  }
+
   if (targetId !== 'call') {
     stopTranslation();
     if (callDetectorFrame) {
@@ -520,6 +584,7 @@ window.addEventListener('message', (event) => {
     const isLastPage = activePageIndex === activePages.length - 1;
     if (data.targetMet) {
       unlockedPages.add(activePageIndex);
+      updateLessonStatus();
     }
     const isUnlocked = unlockedPages.has(activePageIndex);
     lessonNext.disabled = isLastPage || !isUnlocked;

@@ -53,7 +53,8 @@ HAND_CONNECTIONS = (
 
 app = Flask(__name__)
 lock = Lock()
-status_state: dict[str, dict[str, float | bool | None]] = {}
+GLOBAL_STATUS_KEY = "__global__"
+status_state: dict[str, dict[str, float | bool | str | None]] = {}
 
 
 def ensure_hand_model(path: Path) -> None:
@@ -154,7 +155,6 @@ def generate_frames(target_letter: str | None):
                 x = (np.array(row, dtype=np.float32) - model["mean"]) / model["scale"]
                 label, conf = knn_predict(x, model["X"], model["y"], model["k"])
 
-        status_color = (0, 120, 255)
         accuracy_pct = 0.0
         if label and conf is not None:
             if target_upper and label != target_upper:
@@ -163,40 +163,45 @@ def generate_frames(target_letter: str | None):
                 accuracy_pct = max(0.0, min(conf * 100.0, 100.0))
 
         target_key = target_upper or "_"
-        state = status_state.setdefault(
-            target_key,
-            {"stable_start": None, "target_met": False, "accuracy": 0.0, "stable_seconds": 0.0},
-        )
-
-        if target_upper and label == target_upper:
-            if state["stable_start"] is None:
-                state["stable_start"] = now
-            stable_seconds = float(now - (state["stable_start"] or now))
-            target_met = stable_seconds >= 3.0
-        else:
-            state["stable_start"] = None
-            stable_seconds = 0.0
-            target_met = False
-
-        state["accuracy"] = float(accuracy_pct)
-        state["target_met"] = bool(target_met)
-        state["stable_seconds"] = float(stable_seconds)
-
-        status_text = f"Accuracy: {accuracy_pct:.0f}%"
-        if target_upper and target_met:
-            status_color = (0, 200, 0)
-
-        cv2.putText(frame, status_text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, status_color, 2)
-        if target_upper:
-            cv2.putText(
-                frame,
-                f"Target: {target_upper}",
-                (10, 60),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.6,
-                (240, 240, 240),
-                2,
+        with lock:
+            state = status_state.setdefault(
+                target_key,
+                {"stable_start": None, "target_met": False, "accuracy": 0.0, "stable_seconds": 0.0},
             )
+
+            if target_upper and label == target_upper:
+                if state["stable_start"] is None:
+                    state["stable_start"] = now
+                stable_seconds = float(now - (state["stable_start"] or now))
+                target_met = stable_seconds >= 3.0
+            else:
+                state["stable_start"] = None
+                stable_seconds = 0.0
+                target_met = False
+
+            state["accuracy"] = float(accuracy_pct)
+            state["target_met"] = bool(target_met)
+            state["stable_seconds"] = float(stable_seconds)
+
+            global_state = status_state.setdefault(
+                GLOBAL_STATUS_KEY,
+                {"label": None, "label_stable_start": None, "label_stable_seconds": 0.0},
+            )
+            if label:
+                if global_state.get("label") != label:
+                    global_state["label"] = label
+                    global_state["label_stable_start"] = now
+                    global_state["label_stable_seconds"] = 0.0
+                else:
+                    if global_state.get("label_stable_start") is None:
+                        global_state["label_stable_start"] = now
+                    global_state["label_stable_seconds"] = float(
+                        now - (global_state.get("label_stable_start") or now)
+                    )
+            else:
+                global_state["label"] = None
+                global_state["label_stable_start"] = None
+                global_state["label_stable_seconds"] = 0.0
 
         ret, buffer = cv2.imencode(".jpg", frame)
         if not ret:
@@ -228,9 +233,6 @@ def detect():
         "body{margin:0;background:#ffffff;font-family:'IBM Plex Sans',sans-serif;}"
         ".wrap{display:grid;place-items:center;height:100%;padding:8px;}"
         ".card{width:min(95vw,820px);height:auto;display:flex;flex-direction:column;}"
-        ".label{font-size:12px;text-transform:uppercase;letter-spacing:0.12em;color:#5e5e5e;margin:6px 12px 2px;}"
-        ".accuracy{font-size:14px;color:#000;margin:0 12px 4px;font-weight:600;}"
-        ".countdown{font-size:13px;color:#5e5e5e;margin:0 12px 6px;}"
         ".frame{border:1px solid #cbcbcb;border-radius:16px;overflow:hidden;background:#f3f3f3;"
         "width:100%;aspect-ratio:16/9;margin:0 12px 8px;}"
         "img{width:100%;height:100%;object-fit:contain;display:block;}"
@@ -239,28 +241,17 @@ def detect():
         "<body>"
         "<div class=\"wrap\">"
         "<div class=\"card\">"
-        f"<div class=\"label\">Detector {safe_letter}</div>"
-        "<div class=\"accuracy\" id=\"accuracyText\">Accuracy: --%</div>"
-        "<div class=\"countdown\" id=\"countdownText\"></div>"
         f"<div class=\"frame\"><img src=\"{feed_url}\" alt=\"Detector feed\"></div>"
         "</div>"
         "</div>"
         "<script>"
         "const params=new URLSearchParams(window.location.search);"
         "const letter=params.get('letter')||'';"
-        "const accuracyEl=document.getElementById('accuracyText');"
-        "const countdownEl=document.getElementById('countdownText');"
         "const poll=()=>{"
         "fetch(`/status?letter=${encodeURIComponent(letter)}`)"
         ".then(res=>res.json())"
         ".then(data=>{"
         "const accuracy=Math.round(data.accuracy||0);"
-        "accuracyEl.textContent=`Accuracy: ${accuracy}%`;"
-        "const stable=data.stable_seconds||0;"
-        "const remaining=Math.max(0,3-stable);"
-        "if(letter){"
-        "countdownEl.textContent=remaining>0?`Hold steady: ${remaining.toFixed(1)}s`:'Ready to advance';"
-        "}else{countdownEl.textContent='';}"
         "window.parent.postMessage({"
         "type:'detector-status',"
         "letter:letter,"
@@ -293,12 +284,17 @@ def status():
     key = letter or "_"
     with lock:
         state = status_state.get(key, {})
+        global_state = status_state.get(GLOBAL_STATUS_KEY, {})
         payload = {
             "accuracy": state.get("accuracy", 0.0),
             "target_met": state.get("target_met", False),
             "stable_seconds": state.get("stable_seconds", 0.0),
+            "label": global_state.get("label"),
+            "label_stable_seconds": global_state.get("label_stable_seconds", 0.0),
         }
-    return jsonify(payload)
+    response = jsonify(payload)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
 
 
 if __name__ == "__main__":

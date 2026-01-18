@@ -243,7 +243,7 @@
             </div>
             <div class="lesson-main">
               <div class="lesson-detector" id="lessonDetectorWrap">
-                <div class="lesson-detector-frame">
+                <div class="lesson-detector-frame" id="lessonDetectorFrameWrap">
                   <iframe
                     id="lessonDetectorFrame"
                     title="ASL detector"
@@ -251,7 +251,12 @@
                     loading="lazy"
                   ></iframe>
                   <div class="lesson-detector-placeholder" id="lessonDetectorPlaceholder">
-                    Practice pages open the live detector here.
+                    <div class="lesson-detector-message" id="lessonDetectorMessage">
+                      Practice pages open the live detector here.
+                    </div>
+                    <div class="lesson-detector-media is-hidden" id="lessonDetectorMedia">
+                      <img id="lessonDetectorMediaImg" alt="Lesson visual" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -277,60 +282,143 @@
           <div class="section-header">
             <div>
               <h2>Peers</h2>
-              <p class="muted">Match and chat with other learners. Features coming soon.</p>
+              <p class="muted">Choose a friend to start chatting.</p>
             </div>
-            <button class="ghost-btn">Create room</button>
           </div>
 
-          <div class="peer-grid stagger">
-            <div class="panel">
-              <h3>Live conversation</h3>
-              <div class="chat-window">
-                <div class="chat-bubble">
-                  <p class="chat-name">Avery</p>
-                  <p>Want to practice letters today?</p>
-                </div>
-                <div class="chat-bubble is-me">
-                  <p class="chat-name">You</p>
-                  <p>Yes! Let's do 10 minutes.</p>
-                </div>
-                <div class="chat-bubble">
-                  <p class="chat-name">Avery</p>
-                  <p>Cool. I'll start a call.</p>
+          <div class="peers-layout stagger">
+            <aside class="peers-sidebar">
+              <div class="panel peers-panel">
+                <h3>Friends</h3>
+                <div class="peers-list" id="friendsList">
+                  <button class="peer-item" data-name="Avery M." data-level="Beginner">
+                    <div>
+                      <p class="peer-name">Avery M.</p>
+                      <p class="muted">Beginner</p>
+                    </div>
+                    <span class="peer-badge">Beginner</span>
+                  </button>
+                  <button class="peer-item" data-name="Jordan K." data-level="Beginner">
+                    <div>
+                      <p class="peer-name">Jordan K.</p>
+                      <p class="muted">Beginner</p>
+                    </div>
+                    <span class="peer-badge">Beginner</span>
+                  </button>
                 </div>
               </div>
+
+              <div class="panel peers-panel">
+                <h3>Your level</h3>
+                <p class="muted">People at your level (Beginner)</p>
+                <div class="peers-suggestions" id="suggestionsList">
+                  <div class="peer-suggestion">
+                    <span>Kai R.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Noah T.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Mia L.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Eli P.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Zoe K.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Riley S.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Quinn J.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Parker D.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Reese V.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                  <div class="peer-suggestion">
+                    <span>Logan B.</span>
+                    <button class="add-btn">Add +</button>
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <section class="panel chat-panel">
+              <div class="chat-header" id="chatHeader">
+                <div>
+                  <h3 id="chatTitle">Chat</h3>
+                  <p class="muted" id="chatSubtitle">Click a friend to start chatting</p>
+                </div>
+                <button class="ghost-btn" id="callNow" disabled>Video call now</button>
+              </div>
+              <div class="chat-window is-empty" id="chatWindow">
+                <p class="muted">Click a friend to start chatting.</p>
+              </div>
               <div class="chat-input">
-                <input class="input-field" placeholder="Message peers (feature coming soon)" />
-                <button class="primary-btn">Send</button>
+                <input class="input-field" placeholder="Message (coming soon)" disabled />
+                <button class="primary-btn" disabled>Send</button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="page-section" id="call">
+          <div class="section-header call-header">
+            <div>
+              <h2 id="callTitle">Video call</h2>
+              <p class="muted" id="callSubtitle">Connect with a friend to start.</p>
+            </div>
+            <button class="primary-btn" id="callEnd">End call</button>
+          </div>
+
+          <div class="call-layout">
+            <div class="call-main">
+              <div class="call-video">
+                <p class="input-label">Your camera</p>
+                <div class="call-video-frame">
+                  <iframe
+                    id="callDetectorFrame"
+                    title="ASL detector"
+                    src="about:blank"
+                    loading="lazy"
+                  ></iframe>
+                </div>
+              </div>
+              <div class="call-video">
+                <p class="input-label">Peer camera</p>
+                <div class="call-video-frame is-empty">
+                  <p class="muted">Waiting for peer video...</p>
+                </div>
               </div>
             </div>
 
-            <div class="panel">
-              <h3>Peer list</h3>
-              <div class="list">
-                <div class="list-row">
-                  <div>
-                    <p class="list-title">Avery</p>
-                    <p class="muted">Practicing vowels</p>
-                  </div>
-                  <button class="ghost-btn">Ping</button>
+            <aside class="panel call-sidebar">
+              <div class="call-translation-header">
+                <div>
+                  <h3>Translation</h3>
+                  <p class="muted">Logs signs held for 0.5s</p>
                 </div>
-                <div class="list-row">
-                  <div>
-                    <p class="list-title">Jordan</p>
-                    <p class="muted">Working on pace</p>
-                  </div>
-                  <button class="ghost-btn">Ping</button>
-                </div>
-                <div class="list-row">
-                  <div>
-                    <p class="list-title">Sam</p>
-                    <p class="muted">New to ASL</p>
-                  </div>
-                  <button class="ghost-btn">Ping</button>
-                </div>
+                <button class="ghost-btn" id="translationToggle">Active</button>
               </div>
-            </div>
+              <div class="translation-log" id="translationLog">
+                <p class="translation-stream muted" id="translationStream">
+                  Translation output will appear here.
+                </p>
+              </div>
+            </aside>
           </div>
         </section>
       </main>
